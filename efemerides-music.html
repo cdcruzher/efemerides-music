@@ -1,450 +1,421 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6f0ec3; -webkit-text-stroke: #6f0ec3}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #0e6e6d; -webkit-text-stroke: #0e6e6d}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #18702b; -webkit-text-stroke: #18702b}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; -webkit-text-stroke: #000000; min-height: 16.0px}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4d5055; -webkit-text-stroke: #4d5055}
-    span.s1 {font-kerning: none; color: #6f0ec3; background-color: #ecf1f7; -webkit-text-stroke: 0px #6f0ec3}
-    span.s2 {font-kerning: none; background-color: #ecf1f7}
-    span.s3 {font-kerning: none; color: #0e6e6d; background-color: #ecf1f7; -webkit-text-stroke: 0px #0e6e6d}
-    span.s4 {font-kerning: none; color: #18702b; background-color: #ecf1f7; -webkit-text-stroke: 0px #18702b}
-    span.s5 {font-kerning: none; color: #000000; background-color: #ecf1f7; -webkit-text-stroke: 0px #000000}
-    span.s6 {font-kerning: none}
-    span.s7 {font-kerning: none; color: #a4450b; background-color: #ecf1f7; -webkit-text-stroke: 0px #a4450b}
-    span.s8 {font-kerning: none; color: #bf1c25; background-color: #ecf1f7; -webkit-text-stroke: 0px #bf1c25}
-    span.s9 {font-kerning: none; color: #4d5055; background-color: #ecf1f7; -webkit-text-stroke: 0px #4d5055}
-  </style>
-</head>
-<body>
-<p class="p1"><span class="s1">import</span><span class="s2"> </span><span class="s3">React</span><span class="s2">, { useState, useEffect, useMemo } </span><span class="s1">from</span><span class="s2"> </span><span class="s4">'react'</span><span class="s2">;</span></p>
-<p class="p2"><span class="s2">import</span><span class="s5"> {<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">Calendar</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">Music</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s3">Mic2</span><span class="s2">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s3">Disc</span><span class="s2">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s3">Star</span><span class="s2">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">Share2</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">ChevronLeft</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">ChevronRight</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">Loader2</span><span class="s5">,</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">Heart</span><span class="s5">,</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">Info</span><span class="s5">,</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">ChevronDown</span></p>
-<p class="p4"><span class="s5">} </span><span class="s1">from</span><span class="s5"> </span><span class="s2">'lucide-react'</span><span class="s5">;</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s2">// --- Helper Functions ---</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s2">// Keywords to identify music-related events from generic history data</span></p>
-<p class="p3"><span class="s1">const</span><span class="s5"> </span><span class="s2">MUSIC_KEYWORDS</span><span class="s5"> = [</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'music'</span><span class="s5">, </span><span class="s2">'singer'</span><span class="s5">, </span><span class="s2">'song'</span><span class="s5">, </span><span class="s2">'album'</span><span class="s5">, </span><span class="s2">'band'</span><span class="s5">, </span><span class="s2">'guitar'</span><span class="s5">, </span><span class="s2">'vocalist'</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'composer'</span><span class="s5">, </span><span class="s2">'rapper'</span><span class="s5">, </span><span class="s2">'opera'</span><span class="s5">, </span><span class="s2">'symphony'</span><span class="s5">, </span><span class="s2">'concert'</span><span class="s5">, </span><span class="s2">'tour'</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'billboard'</span><span class="s5">, </span><span class="s2">'grammy'</span><span class="s5">, </span><span class="s2">'record'</span><span class="s5">, </span><span class="s2">'released'</span><span class="s5">, </span><span class="s2">'debut'</span><span class="s5">, </span><span class="s2">'pianist'</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'jazz'</span><span class="s5">, </span><span class="s2">'rock'</span><span class="s5">, </span><span class="s2">'pop'</span><span class="s5">, </span><span class="s2">'hip hop'</span><span class="s5">, </span><span class="s2">'single'</span><span class="s5">, </span><span class="s2">'chart'</span><span class="s5">, </span><span class="s2">'orchestra'</span><span class="s5">,</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'musical'</span><span class="s5">, </span><span class="s2">'soundtrack'</span><span class="s5">, </span><span class="s2">'drummer'</span><span class="s5">, </span><span class="s2">'bassist'</span><span class="s5">, </span><span class="s2">'performance'</span><span class="s5">, </span><span class="s2">'festival'</span><span class="s5">,</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'mtv'</span><span class="s5">, </span><span class="s2">'eurovision'</span><span class="s5">, </span><span class="s2">'hall of fame'</span></p>
-<p class="p1"><span class="s2">];</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s2">// Keywords specifically for releases (Albums, Singles, EPs)</span></p>
-<p class="p3"><span class="s1">const</span><span class="s5"> </span><span class="s2">RELEASE_KEYWORDS</span><span class="s5"> = [</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'released'</span><span class="s5">, </span><span class="s2">'album'</span><span class="s5">, </span><span class="s2">'studio album'</span><span class="s5">, </span><span class="s2">'debut'</span><span class="s5">, </span><span class="s2">'single'</span><span class="s5">, </span><span class="s2">'ep '</span><span class="s5">, </span><span class="s2">' E.P. '</span><span class="s5">,<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'soundtrack'</span><span class="s5">, </span><span class="s2">'record'</span><span class="s5">, </span><span class="s2">'published'</span><span class="s5">, </span><span class="s2">'issued'</span></p>
-<p class="p1"><span class="s2">];</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p3"><span class="s1">const</span><span class="s5"> </span><span class="s2">MONTHS</span><span class="s5"> = [</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'January'</span><span class="s5">, </span><span class="s2">'February'</span><span class="s5">, </span><span class="s2">'March'</span><span class="s5">, </span><span class="s2">'April'</span><span class="s5">, </span><span class="s2">'May'</span><span class="s5">, </span><span class="s2">'June'</span><span class="s5">,</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">'July'</span><span class="s5">, </span><span class="s2">'August'</span><span class="s5">, </span><span class="s2">'September'</span><span class="s5">, </span><span class="s2">'October'</span><span class="s5">, </span><span class="s2">'November'</span><span class="s5">, </span><span class="s2">'December'</span></p>
-<p class="p1"><span class="s2">];</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s1">const</span><span class="s2"> isMusicRelated = (text) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> lowerText = text.toLowerCase();</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">return</span><span class="s2"> </span><span class="s3">MUSIC_KEYWORDS</span><span class="s2">.some(keyword =&gt; lowerText.includes(keyword));</span></p>
-<p class="p1"><span class="s2">};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s1">const</span><span class="s2"> isReleaseEvent = (text) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> lowerText = text.toLowerCase();</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">if</span><span class="s2"> (lowerText.includes(</span><span class="s4">'released from'</span><span class="s2">)) </span><span class="s1">return</span><span class="s2"> </span><span class="s1">false</span><span class="s2">;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">return</span><span class="s2"> </span><span class="s3">RELEASE_KEYWORDS</span><span class="s2">.some(keyword =&gt; lowerText.includes(keyword));</span></p>
-<p class="p1"><span class="s2">};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s1">const</span><span class="s2"> formatDate = (date) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">return</span><span class="s2"> </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Intl</span><span class="s2">.</span><span class="s3">DateTimeFormat</span><span class="s2">(</span><span class="s4">'en-US'</span><span class="s2">, { month: </span><span class="s4">'long'</span><span class="s2">, day: </span><span class="s4">'numeric'</span><span class="s2"> }).format(date);</span></p>
-<p class="p1"><span class="s2">};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s2">// --- Components ---</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s1">const</span><span class="s2"> </span><span class="s3">EventCard</span><span class="s2"> = ({ event, category, onToggleFavorite, isFavorite }) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> year = event.year || </span><span class="s4">'Unknown Year'</span><span class="s2">;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> wikiLink = event.pages &amp;&amp; event.pages[</span><span class="s7">0</span><span class="s2">] ? event.pages[</span><span class="s7">0</span><span class="s2">].content_urls.desktop.page : </span><span class="s1">null</span><span class="s2">;</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">  </span></span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">return</span><span class="s5"> (</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">    </span>&lt;div className=</span><span class="s2">"bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-5 hover:border-purple-500/50 transition-all duration-300 group shadow-lg"</span><span class="s5">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span>&lt;div className=</span><span class="s2">"flex justify-between items-start gap-4"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>&lt;div className=</span><span class="s4">"flex-1"</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>&lt;div className=</span><span class="s2">"flex items-center gap-2 mb-2"</span><span class="s5">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">            </span>&lt;span className=</span><span class="s2">"text-purple-400 font-bold text-lg font-mono"</span><span class="s5">&gt;{year}&lt;/span&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">            </span>&lt;span className=</span><span class="s2">"text-xs px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 uppercase tracking-wider"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>{category}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>&lt;p className=</span><span class="s2">"text-slate-200 leading-relaxed text-sm md:text-base"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>{event.text}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;/p&gt;</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">          </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>{wikiLink &amp;&amp; (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;a<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>href={wikiLink}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>target=</span><span class="s4">"_blank"</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>rel=</span><span class="s2">"noopener noreferrer"</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>className=</span><span class="s2">"inline-flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 mt-3 transition-colors"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span></span><span class="s3">Read</span><span class="s2"> on </span><span class="s3">Wikipedia</span><span class="s2"> &lt;</span><span class="s3">Share2</span><span class="s2"> size={</span><span class="s7">12</span><span class="s2">} /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/a&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>)}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>onClick={() =&gt; onToggleFavorite(event)}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>className={</span><span class="s2">`p-2 rounded-full transition-all </span><span class="s5">${isFavorite ? </span><span class="s2">'text-pink-500 bg-pink-500/10'</span><span class="s5"> : </span><span class="s2">'text-slate-500 hover:text-pink-400 hover:bg-slate-700'</span><span class="s5">}</span><span class="s2">`</span><span class="s5">}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>title={isFavorite ? </span><span class="s2">"Remove from favorites"</span><span class="s5"> : </span><span class="s2">"Add to favorites"</span><span class="s5">}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;</span><span class="s3">Heart</span><span class="s2"> size={</span><span class="s7">20</span><span class="s2">} fill={isFavorite ? </span><span class="s4">"currentColor"</span><span class="s2"> : </span><span class="s4">"none"</span><span class="s2">} /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>);</span></p>
-<p class="p1"><span class="s2">};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s1">const</span><span class="s2"> </span><span class="s3">TabButton</span><span class="s2"> = ({ active, label, icon: </span><span class="s3">Icon</span><span class="s2">, onClick, count }) =&gt; (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>&lt;button</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>onClick={onClick}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">    </span>className={</span><span class="s2">`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap</span></p>
-<p class="p1"><span class="s4"><span class="Apple-converted-space">      </span></span><span class="s2">${active<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">        </span>? </span><span class="s2">'bg-purple-600 text-white shadow-purple-500/25 shadow-md'</span><span class="s5"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">        </span>: </span><span class="s2">'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>}</span><span class="s4">`</span><span class="s2">}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;</span><span class="s3">Icon</span><span class="s2"> size={</span><span class="s7">16</span><span class="s2">} /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>{label}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>{count !== </span><span class="s1">undefined</span><span class="s2"> &amp;&amp; (</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span>&lt;span className={</span><span class="s2">`ml-1 text-xs px-1.5 py-0.5 rounded-full </span><span class="s5">${active ? </span><span class="s2">'bg-purple-500'</span><span class="s5"> : </span><span class="s2">'bg-slate-600'</span><span class="s5">}</span><span class="s2">`</span><span class="s5">}&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>{count}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>)}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s2">);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s1">const</span><span class="s2"> </span><span class="s3">EmptyState</span><span class="s2"> = ({ </span><span class="s1">type</span><span class="s2"> }) =&gt; (</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span>&lt;div className=</span><span class="s2">"flex flex-col items-center justify-center py-16 text-slate-500 text-center px-4"</span><span class="s5">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">    </span>&lt;div className=</span><span class="s2">"bg-slate-800 p-4 rounded-full mb-4"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>{</span><span class="s1">type</span><span class="s2"> === </span><span class="s4">'favorites'</span><span class="s2"> ? &lt;</span><span class="s3">Heart</span><span class="s2"> size={</span><span class="s7">32</span><span class="s2">} className=</span><span class="s4">"text-slate-600"</span><span class="s2"> /&gt; : &lt;</span><span class="s3">Music</span><span class="s2"> size={</span><span class="s7">32</span><span class="s2">} className=</span><span class="s4">"text-slate-600"</span><span class="s2"> /&gt;}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">    </span>&lt;h3 className=</span><span class="s2">"text-lg font-semibold text-slate-300 mb-1"</span><span class="s5">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span>{</span><span class="s1">type</span><span class="s5"> === </span><span class="s2">'favorites'</span><span class="s5"> ? </span><span class="s2">'No favorites yet'</span><span class="s5"> : </span><span class="s2">`No specific </span><span class="s5">${</span><span class="s1">type</span><span class="s5">}</span><span class="s2"> found`</span><span class="s5">}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;p className=</span><span class="s4">"text-sm max-w-xs"</span><span class="s2">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>{</span><span class="s1">type</span><span class="s2"> === </span><span class="s4">'favorites'</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">        </span>? </span><span class="s2">'Heart items to save them for later.'</span><span class="s5"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">        </span>: </span><span class="s2">`We couldn't find any </span><span class="s5">${</span><span class="s1">type</span><span class="s5">}</span><span class="s2"> for this specific date in our database.`</span><span class="s5">}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2">);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p2"><span class="s2">export</span><span class="s5"> </span><span class="s2">default</span><span class="s5"> </span><span class="s2">function</span><span class="s5"> </span><span class="s3">MusicEfemeridesApp</span><span class="s5">() {</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">// We initialize with a leap year (2024) to ensure Feb 29 exists in our date logic</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [currentDate, setCurrentDate] = useState(</span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">(</span><span class="s7">2024</span><span class="s2">, </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">().getMonth(), </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">().getDate()));</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [activeTab, setActiveTab] = useState(</span><span class="s4">'releases'</span><span class="s2">);<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [loading, setLoading] = useState(</span><span class="s1">true</span><span class="s2">);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [data, setData] = useState({ events: [], releases: [], births: [], deaths: [] });</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [favorites, setFavorites] = useState([]);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [error, setError] = useState(</span><span class="s1">null</span><span class="s2">);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">// Load favorites</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>useEffect(() =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> saved = localStorage.getItem(</span><span class="s4">'music_favorites'</span><span class="s2">);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">if</span><span class="s2"> (saved) {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">try</span><span class="s2"> {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>setFavorites(</span><span class="s3">JSON</span><span class="s2">.parse(saved));</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>} </span><span class="s1">catch</span><span class="s2"> (e) {</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">        </span>console.error(</span><span class="s2">"Failed to parse favorites"</span><span class="s5">);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>}, []);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">// Save favorites</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>useEffect(() =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>localStorage.setItem(</span><span class="s4">'music_favorites'</span><span class="s2">, </span><span class="s3">JSON</span><span class="s2">.stringify(favorites));</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>}, [favorites]);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> toggleFavorite = (item) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setFavorites(prev =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> exists = prev.find(f =&gt; f.text === item.text);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">if</span><span class="s2"> (exists) {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span></span><span class="s1">return</span><span class="s2"> prev.filter(f =&gt; f.text !== item.text);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">return</span><span class="s2"> [...prev, { ...item, savedAt: </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">().toISOString() }];</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> fetchData = </span><span class="s1">async</span><span class="s2"> (date) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setLoading(</span><span class="s1">true</span><span class="s2">);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setError(</span><span class="s1">null</span><span class="s2">);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> month = date.getMonth() + </span><span class="s7">1</span><span class="s2">;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> day = date.getDate();</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">try</span><span class="s2"> {</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s5"> response = </span><span class="s1">await</span><span class="s5"> fetch(</span><span class="s2">`https://en.wikipedia.org/api/rest_v1/feed/onthisday/all/</span><span class="s5">${month}</span><span class="s2">/</span><span class="s5">${day}</span><span class="s2">`</span><span class="s5">);</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">      </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">if</span><span class="s2"> (!response.ok) </span><span class="s1">throw</span><span class="s2"> </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Error</span><span class="s2">(</span><span class="s4">"Failed to fetch data"</span><span class="s2">);</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">      </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> json = </span><span class="s1">await</span><span class="s2"> response.json();</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> allMusicEvents = (json.selected || []).filter(item =&gt; isMusicRelated(item.text));</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> releases = [];</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> events = [];</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>allMusicEvents.forEach(event =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span></span><span class="s1">if</span><span class="s2"> (isReleaseEvent(event.text)) {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>releases.push(event);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>} </span><span class="s1">else</span><span class="s2"> {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>events.push(event);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> musicBirths = (json.births || []).filter(item =&gt; isMusicRelated(item.text));</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> musicDeaths = (json.deaths || []).filter(item =&gt; isMusicRelated(item.text));</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>setData({</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>events: events,</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>releases: releases,</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>births: musicBirths,</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>deaths: musicDeaths</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>} </span><span class="s1">catch</span><span class="s2"> (err) {</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span>setError(</span><span class="s2">"Could not load history. Please check your connection."</span><span class="s5">);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>} </span><span class="s1">finally</span><span class="s2"> {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>setLoading(</span><span class="s1">false</span><span class="s2">);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>useEffect(() =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>fetchData(currentDate);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>}, [currentDate]);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> changeDate = (days) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> newDate = </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">(currentDate);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>newDate.setDate(newDate.getDate() + days);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setCurrentDate(newDate);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> updateMonth = (e) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> newMonth = parseInt(e.target.value);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> newDate = </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">(currentDate);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>newDate.setMonth(newMonth);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setCurrentDate(newDate);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> updateDay = (e) =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> newDay = parseInt(e.target.value);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s2"> newDate = </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">(currentDate);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>newDate.setDate(newDay);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setCurrentDate(newDate);</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>};</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">// Generate days array based on current month</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> daysInMonth = </span><span class="s1">new</span><span class="s2"> </span><span class="s3">Date</span><span class="s2">(currentDate.getFullYear(), currentDate.getMonth() + </span><span class="s7">1</span><span class="s2">, </span><span class="s7">0</span><span class="s2">).getDate();</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> daysArray = </span><span class="s3">Array</span><span class="s2">.</span><span class="s1">from</span><span class="s2">({ length: daysInMonth }, (_, i) =&gt; i + </span><span class="s7">1</span><span class="s2">);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> displayedItems = useMemo(() =&gt; {</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">if</span><span class="s2"> (activeTab === </span><span class="s4">'favorites'</span><span class="s2">) </span><span class="s1">return</span><span class="s2"> favorites;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">return</span><span class="s2"> data[activeTab] || [];</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>}, [activeTab, data, favorites]);</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">return</span><span class="s5"> (</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">    </span>&lt;div className=</span><span class="s2">"min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-purple-500 selection:text-white pb-12"</span><span class="s5">&gt;</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">      </span>{</span><span class="s2">/* Background decoration */</span><span class="s5">}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span>&lt;div className=</span><span class="s2">"fixed top-0 left-0 w-full h-96 bg-gradient-to-b from-purple-900/20 to-transparent pointer-events-none"</span><span class="s5"> /&gt;</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">      </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">      </span>{</span><span class="s2">/* Header */</span><span class="s5">}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span>&lt;header className=</span><span class="s2">"sticky top-0 z-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800"</span><span class="s5">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">        </span>&lt;div className=</span><span class="s2">"max-w-3xl mx-auto px-4 py-4"</span><span class="s5">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>&lt;div className=</span><span class="s2">"flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;div className=</span><span class="s4">"flex items-center gap-3"</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>&lt;div className=</span><span class="s2">"p-2 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg shadow-lg shadow-purple-900/50"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;</span><span class="s3">Music</span><span class="s2"> size={</span><span class="s7">24</span><span class="s2">} className=</span><span class="s4">"text-white"</span><span class="s2"> /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;div&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                </span>&lt;h1 className=</span><span class="s2">"text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span></span><span class="s3">Music</span><span class="s2"> </span><span class="s3">Time</span><span class="s2"> </span><span class="s3">Capsule</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/h1&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                </span>&lt;p className=</span><span class="s2">"text-xs text-slate-500 font-medium tracking-wide uppercase"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span></span><span class="s3">Daily</span><span class="s2"> </span><span class="s3">Efem</span><span class="s8">é</span><span class="s2">rides</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">            </span>{</span><span class="s2">/* Date Navigator */</span><span class="s5">}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">            </span>&lt;div className=</span><span class="s2">"flex items-center self-center bg-slate-800 rounded-full p-1 border border-slate-700 shadow-sm"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>onClick={() =&gt; changeDate(-</span><span class="s7">1</span><span class="s2">)}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                </span>className=</span><span class="s2">"p-2 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>title=</span><span class="s4">"Previous Day"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;</span><span class="s3">ChevronLeft</span><span class="s2"> size={</span><span class="s7">18</span><span class="s2">} /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/button&gt;</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">              </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;div className=</span><span class="s4">"flex items-center px-2 gap-1"</span><span class="s2">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>{</span><span class="s9">/* Month Select */</span><span class="s2">}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;div className=</span><span class="s4">"relative group"</span><span class="s2">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;select<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>value={currentDate.getMonth()}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>onChange={updateMonth}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                    </span>className=</span><span class="s2">"appearance-none bg-transparent text-sm font-semibold text-center text-slate-200 cursor-pointer focus:outline-none py-1 pr-4 pl-2 hover:text-purple-400 transition-colors"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>{</span><span class="s3">MONTHS</span><span class="s2">.map((m, i) =&gt; (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;option key={m} value={i} className=</span><span class="s4">"bg-slate-800 text-slate-200"</span><span class="s2">&gt;{m}&lt;/option&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>))}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/select&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;</span><span class="s3">ChevronDown</span><span class="s5"> size={</span><span class="s7">12</span><span class="s5">} className=</span><span class="s2">"absolute right-0 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"</span><span class="s5"> /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>{</span><span class="s9">/* Day Select */</span><span class="s2">}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                </span>&lt;div className=</span><span class="s2">"relative group border-l border-slate-700 pl-1"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;select<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>value={currentDate.getDate()}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>onChange={updateDay}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                    </span>className=</span><span class="s2">"appearance-none bg-transparent text-sm font-semibold text-center text-slate-200 cursor-pointer focus:outline-none py-1 pr-4 pl-2 hover:text-purple-400 transition-colors"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>{daysArray.map((d) =&gt; (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;option key={d} value={d} className=</span><span class="s4">"bg-slate-800 text-slate-200"</span><span class="s2">&gt;{d}&lt;/option&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>))}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/select&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;</span><span class="s3">ChevronDown</span><span class="s5"> size={</span><span class="s7">12</span><span class="s5">} className=</span><span class="s2">"absolute right-0 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"</span><span class="s5"> /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>onClick={() =&gt; changeDate(</span><span class="s7">1</span><span class="s2">)}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">                </span>className=</span><span class="s2">"p-2 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>title=</span><span class="s4">"Next Day"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;</span><span class="s3">ChevronRight</span><span class="s2"> size={</span><span class="s7">18</span><span class="s2">} /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>{</span><span class="s9">/* Tabs */</span><span class="s2">}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>&lt;div className=</span><span class="s2">"flex overflow-x-auto pb-2 scrollbar-hide gap-2"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;</span><span class="s3">TabButton</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>active={activeTab === </span><span class="s4">'releases'</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>label=</span><span class="s4">"Releases"</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>icon={</span><span class="s3">Disc</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>count={data.releases.length}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>onClick={() =&gt; setActiveTab(</span><span class="s4">'releases'</span><span class="s2">)}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>/&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;</span><span class="s3">TabButton</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>active={activeTab === </span><span class="s4">'events'</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>label=</span><span class="s4">"Events"</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>icon={</span><span class="s3">Calendar</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>count={data.events.length}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>onClick={() =&gt; setActiveTab(</span><span class="s4">'events'</span><span class="s2">)}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>/&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;</span><span class="s3">TabButton</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>active={activeTab === </span><span class="s4">'births'</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>label=</span><span class="s4">"Births"</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>icon={</span><span class="s3">Mic2</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>count={data.births.length}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>onClick={() =&gt; setActiveTab(</span><span class="s4">'births'</span><span class="s2">)}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>/&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;</span><span class="s3">TabButton</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>active={activeTab === </span><span class="s4">'deaths'</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>label=</span><span class="s4">"Deaths"</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>icon={</span><span class="s3">Star</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>count={data.deaths.length}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>onClick={() =&gt; setActiveTab(</span><span class="s4">'deaths'</span><span class="s2">)}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>/&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;</span><span class="s3">TabButton</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>active={activeTab === </span><span class="s4">'favorites'</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>label=</span><span class="s4">"Saved"</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>icon={</span><span class="s3">Heart</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>count={favorites.length}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>onClick={() =&gt; setActiveTab(</span><span class="s4">'favorites'</span><span class="s2">)}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>/&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/header&gt;</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">      </span>{</span><span class="s2">/* Main Content */</span><span class="s5">}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span>&lt;main className=</span><span class="s2">"max-w-3xl mx-auto px-4 py-6 relative z-10"</span><span class="s5">&gt;</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>{loading ? (</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>&lt;div className=</span><span class="s2">"flex flex-col items-center justify-center py-24 text-slate-500 animate-pulse"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;</span><span class="s3">Loader2</span><span class="s2"> size={</span><span class="s7">40</span><span class="s2">} className=</span><span class="s4">"animate-spin text-purple-500 mb-4"</span><span class="s2"> /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;p&gt;</span><span class="s3">Scanning</span><span class="s2"> music history...&lt;/p&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>) : error ? (</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">          </span>&lt;div className=</span><span class="s2">"bg-red-500/10 border border-red-500/20 text-red-200 p-6 rounded-xl text-center"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;p&gt;{error}&lt;/p&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>onClick={() =&gt; fetchData(currentDate)}</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>className=</span><span class="s2">"mt-4 px-4 py-2 bg-red-600/20 hover:bg-red-600/30 rounded-lg text-sm transition-colors"</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span></span><span class="s3">Retry</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>) : (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;div className=</span><span class="s4">"space-y-4"</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">            </span>&lt;div className=</span><span class="s2">"flex justify-between items-center px-1"</span><span class="s5">&gt;</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>&lt;h2 className=</span><span class="s2">"text-lg font-semibold text-slate-200"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>{activeTab === </span><span class="s4">'favorites'</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>? </span><span class="s4">'Your Collection'</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>: </span><span class="s4">`</span><span class="s2">${activeTab.charAt(</span><span class="s7">0</span><span class="s2">).toUpperCase() + activeTab.slice(</span><span class="s7">1</span><span class="s2">)}</span><span class="s4"> on </span><span class="s2">${formatDate(currentDate)}</span><span class="s4">`</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;span className=</span><span class="s4">"text-xs text-slate-500"</span><span class="s2">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>{displayedItems.length} results</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/span&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s6"></span><br></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>{displayedItems.length === </span><span class="s7">0</span><span class="s2"> ? (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;</span><span class="s3">EmptyState</span><span class="s2"> </span><span class="s1">type</span><span class="s2">={activeTab} /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>) : (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;div className=</span><span class="s4">"grid gap-4"</span><span class="s2">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>{displayedItems.map((item, index) =&gt; (</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;</span><span class="s3">EventCard</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>key={</span><span class="s4">`</span><span class="s2">${activeTab}</span><span class="s4">-</span><span class="s2">${index}</span><span class="s4">-</span><span class="s2">${item.year}</span><span class="s4">`</span><span class="s2">}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>event={item}<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>category={activeTab === </span><span class="s4">'favorites'</span><span class="s2"> ? (item.year ? </span><span class="s4">'Historic'</span><span class="s2"> : </span><span class="s4">'Saved'</span><span class="s2">) : activeTab === </span><span class="s4">'releases'</span><span class="s2"> ? </span><span class="s4">'Release'</span><span class="s2"> : activeTab.slice(</span><span class="s7">0</span><span class="s2">, -</span><span class="s7">1</span><span class="s2">)}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>onToggleFavorite={toggleFavorite}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>isFavorite={favorites.some(f =&gt; f.text === item.text)}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>/&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>))}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>)}</span></p>
-<p class="p5"><span class="s2"><span class="Apple-converted-space">            </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">            </span>{</span><span class="s2">/* Info Footer for context */</span><span class="s5">}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>{activeTab !== </span><span class="s4">'favorites'</span><span class="s2"> &amp;&amp; displayedItems.length &gt; </span><span class="s7">0</span><span class="s2"> &amp;&amp; (</span></p>
-<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>&lt;div className=</span><span class="s2">"mt-8 flex items-start gap-3 p-4 bg-slate-800/30 rounded-lg text-xs text-slate-500"</span><span class="s5">&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;</span><span class="s3">Info</span><span class="s2"> size={</span><span class="s7">16</span><span class="s2">} className=</span><span class="s4">"shrink-0 mt-0.5"</span><span class="s2"> /&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;p&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span></span><span class="s3">These</span><span class="s2"> events are fetched </span><span class="s1">from</span><span class="s2"> historical archives. </span><span class="s3">While</span><span class="s2"> we filter </span><span class="s1">for</span><span class="s2"> music-related terms, occasionally non-music events sharing similar keywords might appear.</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/p&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>)}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>)}</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/main&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>);</span></p>
-<p class="p1"><span class="s2">}</span></p>
-</body>
-</html>
+import React, { useState, useEffect, useMemo } from 'react';
+import { 
+  Calendar, 
+  Music, 
+  Mic2, 
+  Disc, 
+  Star, 
+  Share2, 
+  ChevronLeft, 
+  ChevronRight, 
+  Loader2,
+  Heart,
+  Info,
+  ChevronDown
+} from 'lucide-react';
+
+// --- Helper Functions ---
+
+// Keywords to identify music-related events from generic history data
+const MUSIC_KEYWORDS = [
+  'music', 'singer', 'song', 'album', 'band', 'guitar', 'vocalist', 
+  'composer', 'rapper', 'opera', 'symphony', 'concert', 'tour', 
+  'billboard', 'grammy', 'record', 'released', 'debut', 'pianist', 
+  'jazz', 'rock', 'pop', 'hip hop', 'single', 'chart', 'orchestra',
+  'musical', 'soundtrack', 'drummer', 'bassist', 'performance', 'festival',
+  'mtv', 'eurovision', 'hall of fame'
+];
+
+// Keywords specifically for releases (Albums, Singles, EPs)
+const RELEASE_KEYWORDS = [
+  'released', 'album', 'studio album', 'debut', 'single', 'ep ', ' E.P. ', 
+  'soundtrack', 'record', 'published', 'issued'
+];
+
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+const isMusicRelated = (text) => {
+  const lowerText = text.toLowerCase();
+  return MUSIC_KEYWORDS.some(keyword => lowerText.includes(keyword));
+};
+
+const isReleaseEvent = (text) => {
+  const lowerText = text.toLowerCase();
+  if (lowerText.includes('released from')) return false;
+  return RELEASE_KEYWORDS.some(keyword => lowerText.includes(keyword));
+};
+
+const formatDate = (date) => {
+  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(date);
+};
+
+// --- Components ---
+
+const EventCard = ({ event, category, onToggleFavorite, isFavorite }) => {
+  const year = event.year || 'Unknown Year';
+  const wikiLink = event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : null;
+  
+  return (
+    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-5 hover:border-purple-500/50 transition-all duration-300 group shadow-lg">
+      <div className="flex justify-between items-start gap-4">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-purple-400 font-bold text-lg font-mono">{year}</span>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 uppercase tracking-wider">
+              {category}
+            </span>
+          </div>
+          <p className="text-slate-200 leading-relaxed text-sm md:text-base">
+            {event.text}
+          </p>
+          
+          {wikiLink && (
+            <a 
+              href={wikiLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 mt-3 transition-colors"
+            >
+              Read on Wikipedia <Share2 size={12} />
+            </a>
+          )}
+        </div>
+        
+        <button 
+          onClick={() => onToggleFavorite(event)}
+          className={`p-2 rounded-full transition-all ${isFavorite ? 'text-pink-500 bg-pink-500/10' : 'text-slate-500 hover:text-pink-400 hover:bg-slate-700'}`}
+          title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+        >
+          <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const TabButton = ({ active, label, icon: Icon, onClick, count }) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap
+      ${active 
+        ? 'bg-purple-600 text-white shadow-purple-500/25 shadow-md' 
+        : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
+      }`}
+  >
+    <Icon size={16} />
+    {label}
+    {count !== undefined && (
+      <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-full ${active ? 'bg-purple-500' : 'bg-slate-600'}`}>
+        {count}
+      </span>
+    )}
+  </button>
+);
+
+const EmptyState = ({ type }) => (
+  <div className="flex flex-col items-center justify-center py-16 text-slate-500 text-center px-4">
+    <div className="bg-slate-800 p-4 rounded-full mb-4">
+      {type === 'favorites' ? <Heart size={32} className="text-slate-600" /> : <Music size={32} className="text-slate-600" />}
+    </div>
+    <h3 className="text-lg font-semibold text-slate-300 mb-1">
+      {type === 'favorites' ? 'No favorites yet' : `No specific ${type} found`}
+    </h3>
+    <p className="text-sm max-w-xs">
+      {type === 'favorites' 
+        ? 'Heart items to save them for later.' 
+        : `We couldn't find any ${type} for this specific date in our database.`}
+    </p>
+  </div>
+);
+
+export default function MusicEfemeridesApp() {
+  // We initialize with a leap year (2024) to ensure Feb 29 exists in our date logic
+  const [currentDate, setCurrentDate] = useState(new Date(2024, new Date().getMonth(), new Date().getDate()));
+  const [activeTab, setActiveTab] = useState('releases'); 
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState({ events: [], releases: [], births: [], deaths: [] });
+  const [favorites, setFavorites] = useState([]);
+  const [error, setError] = useState(null);
+
+  // Load favorites
+  useEffect(() => {
+    const saved = localStorage.getItem('music_favorites');
+    if (saved) {
+      try {
+        setFavorites(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse favorites");
+      }
+    }
+  }, []);
+
+  // Save favorites
+  useEffect(() => {
+    localStorage.setItem('music_favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (item) => {
+    setFavorites(prev => {
+      const exists = prev.find(f => f.text === item.text);
+      if (exists) {
+        return prev.filter(f => f.text !== item.text);
+      }
+      return [...prev, { ...item, savedAt: new Date().toISOString() }];
+    });
+  };
+
+  const fetchData = async (date) => {
+    setLoading(true);
+    setError(null);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    try {
+      const response = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/all/${month}/${day}`);
+      
+      if (!response.ok) throw new Error("Failed to fetch data");
+      
+      const json = await response.json();
+
+      const allMusicEvents = (json.selected || []).filter(item => isMusicRelated(item.text));
+
+      const releases = [];
+      const events = [];
+
+      allMusicEvents.forEach(event => {
+        if (isReleaseEvent(event.text)) {
+          releases.push(event);
+        } else {
+          events.push(event);
+        }
+      });
+
+      const musicBirths = (json.births || []).filter(item => isMusicRelated(item.text));
+      const musicDeaths = (json.deaths || []).filter(item => isMusicRelated(item.text));
+
+      setData({
+        events: events,
+        releases: releases,
+        births: musicBirths,
+        deaths: musicDeaths
+      });
+    } catch (err) {
+      setError("Could not load history. Please check your connection.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(currentDate);
+  }, [currentDate]);
+
+  const changeDate = (days) => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() + days);
+    setCurrentDate(newDate);
+  };
+
+  const updateMonth = (e) => {
+    const newMonth = parseInt(e.target.value);
+    const newDate = new Date(currentDate);
+    newDate.setMonth(newMonth);
+    setCurrentDate(newDate);
+  };
+
+  const updateDay = (e) => {
+    const newDay = parseInt(e.target.value);
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDay);
+    setCurrentDate(newDate);
+  };
+
+  // Generate days array based on current month
+  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+  const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+  const displayedItems = useMemo(() => {
+    if (activeTab === 'favorites') return favorites;
+    return data[activeTab] || [];
+  }, [activeTab, data, favorites]);
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-purple-500 selection:text-white pb-12">
+      {/* Background decoration */}
+      <div className="fixed top-0 left-0 w-full h-96 bg-gradient-to-b from-purple-900/20 to-transparent pointer-events-none" />
+      
+      {/* Header */}
+      <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div className="max-w-3xl mx-auto px-4 py-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg shadow-lg shadow-purple-900/50">
+                <Music size={24} className="text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                  Music Time Capsule
+                </h1>
+                <p className="text-xs text-slate-500 font-medium tracking-wide uppercase">
+                  Daily Efemérides
+                </p>
+              </div>
+            </div>
+
+            {/* Date Navigator */}
+            <div className="flex items-center self-center bg-slate-800 rounded-full p-1 border border-slate-700 shadow-sm">
+              <button 
+                onClick={() => changeDate(-1)}
+                className="p-2 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors"
+                title="Previous Day"
+              >
+                <ChevronLeft size={18} />
+              </button>
+           
+              <div className="flex items-center px-2 gap-1">
+                {/* Month Select */}
+                <div className="relative group">
+                  <select 
+                    value={currentDate.getMonth()} 
+                    onChange={updateMonth}
+                    className="appearance-none bg-transparent text-sm font-semibold text-center text-slate-200 cursor-pointer focus:outline-none py-1 pr-4 pl-2 hover:text-purple-400 transition-colors"
+                  >
+                    {MONTHS.map((m, i) => (
+                      <option key={m} value={i} className="bg-slate-800 text-slate-200">{m}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={12} className="absolute right-0 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
+                </div>
+
+                {/* Day Select */}
+                <div className="relative group border-l border-slate-700 pl-1">
+                  <select 
+                    value={currentDate.getDate()} 
+                    onChange={updateDay}
+                    className="appearance-none bg-transparent text-sm font-semibold text-center text-slate-200 cursor-pointer focus:outline-none py-1 pr-4 pl-2 hover:text-purple-400 transition-colors"
+                  >
+                    {daysArray.map((d) => (
+                      <option key={d} value={d} className="bg-slate-800 text-slate-200">{d}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={12} className="absolute right-0 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none" />
+                </div>
+              </div>
+
+              <button 
+                onClick={() => changeDate(1)}
+                className="p-2 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-colors"
+                title="Next Day"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex overflow-x-auto pb-2 scrollbar-hide gap-2">
+            <TabButton 
+              active={activeTab === 'releases'} 
+              label="Releases" 
+              icon={Disc} 
+              count={data.releases.length}
+              onClick={() => setActiveTab('releases')} 
+            />
+            <TabButton 
+              active={activeTab === 'events'} 
+              label="Events" 
+              icon={Calendar} 
+              count={data.events.length}
+              onClick={() => setActiveTab('events')} 
+            />
+            <TabButton 
+              active={activeTab === 'births'} 
+              label="Births" 
+              icon={Mic2} 
+              count={data.births.length}
+              onClick={() => setActiveTab('births')} 
+            />
+            <TabButton 
+              active={activeTab === 'deaths'} 
+              label="Deaths" 
+              icon={Star} 
+              count={data.deaths.length}
+              onClick={() => setActiveTab('deaths')} 
+            />
+            <TabButton 
+              active={activeTab === 'favorites'} 
+              label="Saved" 
+              icon={Heart} 
+              count={favorites.length}
+              onClick={() => setActiveTab('favorites')} 
+            />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-3xl mx-auto px-4 py-6 relative z-10">
+       
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-24 text-slate-500 animate-pulse">
+            <Loader2 size={40} className="animate-spin text-purple-500 mb-4" />
+            <p>Scanning music history...</p>
+          </div>
+        ) : error ? (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-200 p-6 rounded-xl text-center">
+            <p>{error}</p>
+            <button 
+              onClick={() => fetchData(currentDate)}
+              className="mt-4 px-4 py-2 bg-red-600/20 hover:bg-red-600/30 rounded-lg text-sm transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="flex justify-between items-center px-1">
+              <h2 className="text-lg font-semibold text-slate-200">
+                {activeTab === 'favorites' 
+                  ? 'Your Collection' 
+                  : `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} on ${formatDate(currentDate)}`
+                }
+              </h2>
+              <span className="text-xs text-slate-500">
+                {displayedItems.length} results
+              </span>
+            </div>
+
+            {displayedItems.length === 0 ? (
+              <EmptyState type={activeTab} />
+            ) : (
+              <div className="grid gap-4">
+                {displayedItems.map((item, index) => (
+                  <EventCard 
+                    key={`${activeTab}-${index}-${item.year}`} 
+                    event={item} 
+                    category={activeTab === 'favorites' ? (item.year ? 'Historic' : 'Saved') : activeTab === 'releases' ? 'Release' : activeTab.slice(0, -1)}
+                    onToggleFavorite={toggleFavorite}
+                    isFavorite={favorites.some(f => f.text === item.text)}
+                  />
+                ))}
+              </div>
+            )}
+           
+            {/* Info Footer for context */}
+            {activeTab !== 'favorites' && displayedItems.length > 0 && (
+              <div className="mt-8 flex items-start gap-3 p-4 bg-slate-800/30 rounded-lg text-xs text-slate-500">
+                <Info size={16} className="shrink-0 mt-0.5" />
+                <p>
+                  These events are fetched from historical archives. While we filter for music-related terms, occasionally non-music events sharing similar keywords might appear.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
