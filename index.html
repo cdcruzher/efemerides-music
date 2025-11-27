@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Time Capsule</title>
-    <!-- 1. Cargar Tailwind CSS (ENLACE CORREGIDO) -->
+    <!-- 1. Cargar Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- 2. Cargar React y ReactDOM -->
@@ -28,7 +28,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // --- COMPONENTE DE ICONOS SVG (Esto hace que se vea profesional) ---
+        // --- COMPONENTE DE ICONOS SVG ---
         const Icon = ({ name, size = 20, className = "" }) => {
              const icons = {
                  music: <path d="M9 18V5l12-2v13"></path>,
@@ -45,7 +45,6 @@
                  share: <><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></>
              };
              
-             // Detalles extra para music y mic
              const extraContent = name === 'music' ? <><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></> : null;
              const micBase = name === 'mic' ? <><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></> : null;
 
@@ -193,6 +192,9 @@
             const [data, setData] = useState({ events: [], releases: [], births: [], deaths: [] });
             const [favorites, setFavorites] = useState([]);
             const [error, setError] = useState(null);
+            
+            // NOMBRE DE TU ARCHIVO DE IMAGEN
+            const LOGO_FILENAME = "logo.jpg";
 
             useEffect(() => {
                 const saved = localStorage.getItem('music_favorites');
@@ -298,8 +300,17 @@
                     <div className="max-w-3xl mx-auto px-4 py-4">
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
                         <div className="flex items-center gap-3">
-                        <div className="p-2 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg shadow-lg shadow-purple-900/50">
-                            <Icon name="music" size={24} className="text-white" />
+                        {/* SECCIÓN DEL LOGO ACTUALIZADA */}
+                        <div className="h-12 w-12 rounded-lg overflow-hidden shadow-lg shadow-purple-900/50 border border-slate-700 bg-slate-800">
+                             <img 
+                                src={LOGO_FILENAME} 
+                                alt="Logo"
+                                className="h-full w-full object-cover"
+                                onError={(e) => {
+                                    // Fallback si no encuentra logo.jpg: usa un generador de avatares bonito
+                                    e.target.src = "https://ui-avatars.com/api/?name=Music+Time&background=9333ea&color=fff&size=128";
+                                }}
+                             />
                         </div>
                         <div>
                             <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
