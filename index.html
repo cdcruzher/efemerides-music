@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Time Capsule</title>
+<!-- 1. Cargar Tailwind CSS -->
+<script src="https://www.google.com/search?q=https://cdn.tailwindcss.com"></script>
+
+<!-- 2. Cargar React y ReactDOM -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+<!-- 3. Cargar Babel (para traducir el código) -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<style>
+    /* Ocultar barra de desplazamiento */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+
+
+</head>
+<body class="bg-slate-900 text-slate-100">
+<div id="root"></div>
+
+<!-- 4. Tu código React dentro de este script especial -->
+<script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // Versión simplificada de iconos para que funcione sin npm
+    const Icon = ({ name, size = 16, className = "" }) => {
+         // Map simple de iconos
+         const icons = {
+             music: "🎵", calendar: "📅", mic: "🎤", disc: "💿", 
+             star: "⭐", heart: "❤️", info: "ℹ️", 
+             left: "←", right: "→", down: "▼", loader: "⌛",
+             share: "🔗"
+         };
+         return <span className={`inline-block ${className}`} style={{fontSize: size}}>{icons[name] || "?"}</span>;
+    };
+
+    const MUSIC_KEYWORDS = [
+        'music', 'singer', 'song', 'album', 'band', 'guitar', 'vocalist', 
+        'composer', 'rapper', 'opera', 'symphony', 'concert', 'tour', 
+        'billboard', 'grammy', 'record', 'released', 'debut', 'pianist', 
+        'jazz', 'rock', 'pop', 'hip hop', 'single', 'chart', 'orchestra',
+        'musical', 'soundtrack', 'drummer', 'bassist', 'performance', 'festival',
+        'mtv', 'eurovision', 'hall of fame'
+    ];
+
+    const RELEASE_KEYWORDS = [
+        'released', 'album', 'studio album', 'debut', 'single', 'ep ', ' E.P. ', 
+        'soundtrack', 'record', 'published', 'issued'
+    ];
+
+    const MONTHS = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const isMusicRelated = (text) => {
+        const lowerText = text.toLowerCase();
+        return MUSIC_KEYWORDS.some(keyword => lowerText.includes(keyword));
+    };
+
+    const isReleaseEvent = (text) => {
+        const lowerText = text.toLowerCase();
+        if (lowerText.includes('released from')) return false;
+        return RELEASE_KEYWORDS.some(keyword => lowerText.includes(keyword));
+    };
+
+    const formatDate = (date) => {
+        return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(date);
+    };
+
+    // --- Components ---
+
+    const EventCard = ({ event, category, onToggleFavorite, isFavorite }) => {
+        const year = event.year || 'Unknown Year';
+        const wikiLink = event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : null;
+        
+        return (
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-5 hover:border-purple-500/50 transition-all duration-300 group shadow-lg">
+            <div className="flex justify-between items-start gap-4">
+                <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="text-purple-400 font-bold text-lg font-mono">{year}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 uppercase tracking-wider">
+                    {category}
+                    </span>
+                </div>
+                <p className="text-slate-200 leading-relaxed text-sm md:text-base">
+                    {event.text}
+                </p>
+                
+                {wikiLink && (
+                    <a 
+                    href={wikiLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 mt-3 transition-colors"
+                    >
+                    Read on Wikipedia <Icon name="share" size={12} />
+                    </a>
+                )}
+                </div>
+                
+                <button 
+                onClick={() => onToggleFavorite(event)}
+                className={`p-2 rounded-full transition-all ${isFavorite ? 'text-pink-500 bg-pink-500/10' : 'text-slate-500 hover:text-pink-400 hover:bg-slate-700'}`}
+                title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                >
+                <Icon name="heart" size={20} className={isFavorite ? "text-pink-500" : "text-slate-500"} />
+                </button>
+            </div>
+            </div>
+        );
+    };
+
+    const TabButton = ({ active, label, icon, onClick, count }) => (
+        <button
+            onClick={onClick}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap
+            ${active 
+                ? 'bg-purple-600 text-white shadow-purple-500/25 shadow-md' 
+                : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
+            }`}
+        >
+            <Icon name={icon} size={16} />
+            {label}
+            {count !== undefined && (
+            <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-full ${active ? 'bg-purple-500' : 'bg-slate-600'}`}>
+                {count}
+            </span>
+            )}
+        </button>
+    );
+
+    const EmptyState = ({ type }) => (
+        <div className="flex flex-col items-center justify-center py-16 text-slate-500 text-center px-4">
+            <div className="bg-slate-800 p-4 rounded-full mb-4">
+            <Icon name={type === 'favorites' ? 'heart' : 'music'} size={32} className="text-slate-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-300 mb-1">
+            {type === 'favorites' ? 'No favorites yet' : `No specific ${type} found`}
+            </h3>
+            <p className="text-sm max-w-xs">
+            {type === 'favorites' 
+                ? 'Heart items to save them for later.' 
+                : `We couldn't find any ${type} for this specific date in our database.`}
+            </p>
+        </div>
+    );
+
+    function MusicEfemeridesApp() {
+        const [currentDate, setCurrentDate] = useState(new Date(2024, new Date().getMonth(), new Date().getDate()));
+        const [activeTab, setActiveTab] = useState('releases'); 
+        const [loading, setLoading] = useState(true);
+        const [data, setData] = useState({ events: [], releases: [], births: [], deaths: [] });
+        const [favorites, setFavorites] = useState([]);
+        const [error, setError] = useState(null);
+
+        useEffect(() => {
+            const saved = localStorage.getItem('music_favorites');
+            if (saved) {
+            try {
+                setFavorites(JSON.parse(saved));
+            } catch (e) {
+                console.error("Failed to parse favorites");
+            }
+            }
+        }, []);
+
+        useEffect(() => {
+            localStorage.setItem('music_favorites', JSON.stringify(favorites));
+        }, [favorites]);
+
+        const toggleFavorite = (item) => {
+            setFavorites(prev => {
+            const exists = prev.find(f => f.text === item.text);
+            if (exists) {
+                return prev.filter(f => f.text !== item.text);
+            }
+            return [...prev, { ...item, savedAt: new Date().toISOString() }];
+            });
+        };
+
+        const fetchData = async (date) => {
+            setLoading(true);
+            setError(null);
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            try {
+            const response = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/all/${month}/${day}`);
+            if (!response.ok) throw new Error("Failed to fetch data");
+            const json = await response.json();
+            const allMusicEvents = (json.selected || []).filter(item => isMusicRelated(item.text));
+
+            const releases = [];
+            const events = [];
+
+            allMusicEvents.forEach(event => {
+                if (isReleaseEvent(event.text)) {
+                releases.push(event);
+                } else {
+                events.push(event);
+                }
+            });
+
+            const musicBirths = (json.births || []).filter(item => isMusicRelated(item.text));
+            const musicDeaths = (json.deaths || []).filter(item => isMusicRelated(item.text));
+
+            setData({
+                events: events,
+                releases: releases,
+                births: musicBirths,
+                deaths: musicDeaths
+            });
+            } catch (err) {
+            setError("Could not load history. Please check your connection.");
+            } finally {
+            setLoading(false);
+            }
+        };
+
+        useEffect(() => {
+            fetchData(currentDate);
+        }, [currentDate]);
+
+        const changeDate = (days) => {
+            const newDate = new Date(currentDate);
+            newDate.setDate(newDate.getDate() + days);
+            setCurrentDate(newDate);
+        };
+
+        const updateMonth = (e) => {
+            const newMonth = parseInt(e.target.value);
+            const newDate = new Date(currentDate);
+            newDate.setMonth(newMonth);
+            setCurrentDate(newDate);
+        };
+
+        const updateDay = (e) => {
+            const newDay = parseInt(e.target.value);
+            const newDate = new Date(currentDate);
+            newDate.setDate(newDay);
+            setCurrentDate(newDate);
+        };
+
+        const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+        const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+        const displayedItems = useMemo(() => {
+            if (activeTab === 'favorites') return favorites;
+            return data[activeTab] || [];
+        }, [activeTab, data, favorites]);
+
+        return (
+            <div className="min-h-screen bg-slate-900 text-slate-100 font-sans pb-12">
+            <div className="fixed top-0 left-0 w-full h-96 bg-gradient-to-b from-purple-900/20 to-transparent pointer-events-none" />
+            
+            <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+                <div className="max-w-3xl mx-auto px-4 py-4">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                    <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg shadow-lg shadow-purple-900/50">
+                        <Icon name="music" size={24} className="text-white" />
+                    </div>
+                    <div>
+                        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                        Music Time Capsule
+                        </h1>
+                        <p className="text-xs text-slate-500 font-medium tracking-wide uppercase">
+                        Daily Efemérides
+                        </p>
+                    </div>
+                    </div>
+
+                    <div className="flex items-center self-center bg-slate-800 rounded-full p-1 border border-slate-700 shadow-sm">
+                    <button onClick={() => changeDate(-1)} className="p-2 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white">
+                        <Icon name="left" size={18} />
+                    </button>
+                
+                    <div className="flex items-center px-2 gap-1">
+                        <div className="relative group">
+                        <select value={currentDate.getMonth()} onChange={updateMonth} className="appearance-none bg-transparent text-sm font-semibold text-center text-slate-200 cursor-pointer focus:outline-none py-1 pr-4 pl-2 hover:text-purple-400">
+                            {MONTHS.map((m, i) => (
+                            <option key={m} value={i} className="bg-slate-800 text-slate-200">{m}</option>
+                            ))}
+                        </select>
+                        </div>
+
+                        <div className="relative group border-l border-slate-700 pl-1">
+                        <select value={currentDate.getDate()} onChange={updateDay} className="appearance-none bg-transparent text-sm font-semibold text-center text-slate-200 cursor-pointer focus:outline-none py-1 pr-4 pl-2 hover:text-purple-400">
+                            {daysArray.map((d) => (
+                            <option key={d} value={d} className="bg-slate-800 text-slate-200">{d}</option>
+                            ))}
+                        </select>
+                        </div>
+                    </div>
+
+                    <button onClick={() => changeDate(1)} className="p-2 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white">
+                        <Icon name="right" size={18} />
+                    </button>
+                    </div>
+                </div>
+
+                <div className="flex overflow-x-auto pb-2 scrollbar-hide gap-2">
+                    <TabButton active={activeTab === 'releases'} label="Releases" icon="disc" count={data.releases.length} onClick={() => setActiveTab('releases')} />
+                    <TabButton active={activeTab === 'events'} label="Events" icon="calendar" count={data.events.length} onClick={() => setActiveTab('events')} />
+                    <TabButton active={activeTab === 'births'} label="Births" icon="mic" count={data.births.length} onClick={() => setActiveTab('births')} />
+                    <TabButton active={activeTab === 'deaths'} label="Deaths" icon="star" count={data.deaths.length} onClick={() => setActiveTab('deaths')} />
+                    <TabButton active={activeTab === 'favorites'} label="Saved" icon="heart" count={favorites.length} onClick={() => setActiveTab('favorites')} />
+                </div>
+                </div>
+            </header>
+
+            <main className="max-w-3xl mx-auto px-4 py-6 relative z-10">
+                {loading ? (
+                <div className="flex flex-col items-center justify-center py-24 text-slate-500">
+                    <Icon name="loader" size={40} className="mb-4" />
+                    <p>Scanning music history...</p>
+                </div>
+                ) : error ? (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-200 p-6 rounded-xl text-center">
+                    <p>{error}</p>
+                    <button onClick={() => fetchData(currentDate)} className="mt-4 px-4 py-2 bg-red-600/20 hover:bg-red-600/30 rounded-lg text-sm">Retry</button>
+                </div>
+                ) : (
+                <div className="space-y-4">
+                    <div className="flex justify-between items-center px-1">
+                    <h2 className="text-lg font-semibold text-slate-200">
+                        {activeTab === 'favorites' ? 'Your Collection' : `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} on ${formatDate(currentDate)}`}
+                    </h2>
+                    <span className="text-xs text-slate-500">{displayedItems.length} results</span>
+                    </div>
+
+                    {displayedItems.length === 0 ? (
+                    <EmptyState type={activeTab} />
+                    ) : (
+                    <div className="grid gap-4">
+                        {displayedItems.map((item, index) => (
+                        <EventCard 
+                            key={`${activeTab}-${index}-${item.year}`} 
+                            event={item} 
+                            category={activeTab === 'favorites' ? (item.year ? 'Historic' : 'Saved') : activeTab === 'releases' ? 'Release' : activeTab.slice(0, -1)}
+                            onToggleFavorite={toggleFavorite}
+                            isFavorite={favorites.some(f => f.text === item.text)}
+                        />
+                        ))}
+                    </div>
+                    )}
+                    
+                    {activeTab !== 'favorites' && displayedItems.length > 0 && (
+                    <div className="mt-8 flex items-start gap-3 p-4 bg-slate-800/30 rounded-lg text-xs text-slate-500">
+                        <Icon name="info" size={16} className="shrink-0 mt-0.5" />
+                        <p>These events are fetched from historical archives.</p>
+                    </div>
+                    )}
+                </div>
+                )}
+            </main>
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<MusicEfemeridesApp />);
+</script>
+
+
+</body>
+</html>
